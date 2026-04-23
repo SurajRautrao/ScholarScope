@@ -53,7 +53,6 @@ The system supports:
 
 * Extracts key insights from each paper using Gemma3:4B
 * Identifies:
-
   * Problem
   * Method
   * Results
@@ -63,7 +62,6 @@ The system supports:
 
 * Combines insights from multiple papers using Gemma3:12B
 * Generates:
-
   * Structured literature review
   * Comparisons
   * Trends
