@@ -43,7 +43,6 @@ The system supports:
 * Fetches top research papers based on query
 * Uses external APIs (e.g., arXiv, Semantic Scholar)
 * Outputs structured paper metadata:
-
   * Title
   * Abstract
   * Citations
@@ -122,7 +121,6 @@ Response (Result + Sources + Graph)
 ## LangGraph Execution Flow
 
 The pipeline is orchestrated using LangGraph:
-
 * Each agent is represented as a node
 * Data is passed via a shared state object
 
@@ -158,7 +156,6 @@ state = {
 3. FastAPI triggers LangGraph pipeline
 4. Each agent processes step-by-step
 5. Final output includes:
-
    * Research summary
    * References
    * Citation graph
