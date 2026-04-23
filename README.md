@@ -6,6 +6,14 @@
 > AI-powered research assistant for literature review, citation analysis, and knowledge graph visualization.
 > ScholarScope uses a multi-agent architecture built with LangGraph, where each node performs a specialized task in the research pipeline.
 
+Problem Statement:
+
+Researchers and students often spend hours manually searching, reading, and synthesizing academic papers from large databases. This process is slow, repetitive, and difficult to scale when dealing with large volumes of literature.
+
+ScholarScope automates this workflow by using AI agents to retrieve, analyze, and summarize research papers, while also visualizing citation relationships to help users understand connections in the literature faster.
+
+It transforms raw academic search into a structured, interactive research exploration experience.
+
 ---
 
 ## Overview
