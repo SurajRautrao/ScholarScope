@@ -214,12 +214,6 @@ ollama serve
 
 ---
 
-## Contribution
-
-This is a personal project, but suggestions and improvements are welcome.
-
----
-
 ## License
 
 This project is licensed under the MIT License.
