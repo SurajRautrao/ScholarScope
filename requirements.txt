@@ -1,0 +1,16 @@
+langchain
+faiss-cpu
+sentence-transformers
+requests
+python-dotenv
+mlflow
+tqdm
+ollama
+streamlit
+fastapi
+uvicorn
+networkx
+pyvis
+pymupdf
+langgraph
+arxiv

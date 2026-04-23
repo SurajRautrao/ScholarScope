@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+
+# Environment
+.env
+
+# Streamlit
+.streamlit/
+
+# Data / temp
+*.json
+temp.pdf
+
+# Graph files
+graphs/
+*.html
+
+# MLflow
+mlruns/
+
+# OS
+.DS_Store
+Thumbs.db
