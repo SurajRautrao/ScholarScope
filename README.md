@@ -29,6 +29,23 @@ The system supports:
 * PDF-based analysis
 
 ---
+## User Interface
+
+**Main UI**
+- Research Query
+<img width="1910" height="862" alt="research query" src="https://github.com/user-attachments/assets/77cdcb18-1440-47c0-8711-4d41c1c2a3ce" />
+
+- Pdf Upload
+<img width="1917" height="875" alt="pdf upload" src="https://github.com/user-attachments/assets/add47358-ef25-4fcc-871a-e6d56d96726f" />
+
+**Research Results:**
+<img width="1918" height="867" alt="query result" src="https://github.com/user-attachments/assets/d104b9ef-37f3-43eb-ae98-d692537852f6" />
+
+**References and Citation Graphs:**
+<img width="1855" height="848" alt="citation graph" src="https://github.com/user-attachments/assets/81feaa8e-809e-4c86-8758-555dd71d2ce8" />
+
+**Pdf Analysis Results:**
+<img width="1918" height="872" alt="pdf results" src="https://github.com/user-attachments/assets/eaab8ca4-6715-4e44-8dde-6b85fa3eec75" />
 
 ## Agents Explained
 
