@@ -6,7 +6,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./graphs:/app/graphs   # ✅ shared folder for graphs
+      - ./graphs:/app/graphs   #  shared folder for graphs
 
   frontend:
     build:
@@ -17,4 +17,4 @@ services:
     depends_on:
       - backend
     volumes:
-      - ./graphs:/app/graphs   # ✅ SAME shared folder
+      - ./graphs:/app/graphs   #  SAME shared folder
