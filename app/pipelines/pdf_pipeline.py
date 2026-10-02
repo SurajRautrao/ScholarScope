@@ -3,7 +3,7 @@ from app.rag.chunker import chunk_text
 from app.rag.pdf_retriever import retrieve_relevant_chunks
 from app.agents.pdf_analyst import analyze_pdf
 
-def run_pdf_pipeline(file_path, query="Explain this paper"):
+def run_pdf_pipeline(file_path, query=None):
     print("\n[1] Extracting text from PDF...")
     text = extract_text_from_pdf(file_path)
 
