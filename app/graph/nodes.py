@@ -60,7 +60,6 @@ def analyze_node(state):
 # ---------------- GRAPH ----------------
 def graph_node(state):
     papers = state.get("top_papers", [])
-    print("GRAPH NODE PAPERS:", papers)
 
     if not papers:
         print("No papers → skipping graph")
@@ -72,7 +71,6 @@ def graph_node(state):
     )
 
     path = plot_graph(graph)
-    print("TOP PAPERS:", state.get("top_papers"))
     return {"graph_path": path}
 
 
@@ -86,7 +84,8 @@ def writer_node(state):
 
     # sources from top papers
     sources = [
-        {"title": p["title"], "link": p.get("link", "")}
+        # arXiv papers store "link", Semantic Scholar papers store "url"
+        {"title": p["title"], "link": p.get("link") or p.get("url") or ""}
         for p in state["top_papers"]
     ]
 

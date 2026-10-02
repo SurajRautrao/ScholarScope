@@ -24,7 +24,6 @@ def build_citation_graph(papers, fetch_references_fn, max_refs=10):
         except Exception as e:
             print(f"[ERROR] Failed to fetch references for {main_title}: {e}")
             references = []
-        print("REFERENCES:", references)
 
         for ref in references:
             ref_title = ref.get("title", "Unknown Paper")
@@ -54,7 +53,7 @@ def plot_graph(graph):
     net = Network(
         height="650px",
         width="100%",
-        bgcolor="#f0f2f8",   # dark modern bg
+        bgcolor="#182345",   # dark modern bg
         font_color="white",
         directed=True,
         cdn_resources="in_line"
@@ -99,7 +98,11 @@ def plot_graph(graph):
 
     #path = "citation_graph.html"
 
-    net.save_graph(path)
+    # pyvis writes with the platform default encoding (cp1252 on Windows),
+    # which fails on non-ASCII paper titles
+    html = net.generate_html()
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(html)
     print("GRAPH SAVED AT:", path)
 
     return path

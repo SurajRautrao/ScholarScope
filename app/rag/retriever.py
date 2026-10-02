@@ -3,10 +3,12 @@ from app.rag.vector_store import VectorStore
 from app.rag.ranker import compute_scores
 
 def retrieve_relevant_papers(query, papers, k=5):
-    texts = [
-        f"{p['title']} {p['summary']}"
-        for p in papers if p['summary']
-    ]
+    # keep papers and texts aligned: only index papers that have an abstract
+    papers = [p for p in papers if p.get("summary")]
+    if not papers:
+        return []
+
+    texts = [f"{p['title']} {p['summary']}" for p in papers]
 
     paper_embeddings = embed_texts(texts)
 

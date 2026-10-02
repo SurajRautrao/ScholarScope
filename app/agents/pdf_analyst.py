@@ -1,5 +1,7 @@
 import ollama
-client = ollama.Client(host="http://host.docker.internal:11434")
+from app.utils.config import OLLAMA_HOST
+
+client = ollama.Client(host=OLLAMA_HOST)
 
 
 def analyze_pdf(chunks):
@@ -27,8 +29,5 @@ def analyze_pdf(chunks):
         model="gemma3:4b",
         messages=[{"role": "user", "content": prompt}]
     )
-    
-    print("\n[DEBUG LLM OUTPUT]:\n")
-    print(response['message']['content'])
 
     return response['message']['content']

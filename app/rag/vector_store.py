@@ -11,10 +11,16 @@ class VectorStore:
         self.texts.extend(texts)
 
     def search(self, query_vector, k=5):
+        k = min(k, self.index.ntotal)
+        if k == 0:
+            return []
+
         distances, indices = self.index.search(query_vector, k)
 
         results = []
         for i, idx in enumerate(indices[0]):
+            if idx < 0:
+                continue
             results.append({
                 "paper": self.texts[idx],
                 "distance": distances[0][i]

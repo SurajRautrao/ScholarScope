@@ -1,5 +1,7 @@
 import ollama
-client = ollama.Client(host="http://host.docker.internal:11434")
+from app.utils.config import OLLAMA_HOST
+
+client = ollama.Client(host=OLLAMA_HOST)
 
 def analyze_paper(paper):
     prompt = f"""

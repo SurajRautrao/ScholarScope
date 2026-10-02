@@ -1,8 +1,44 @@
 import requests
 import time
 import arxiv
+from app.utils.config import SEMANTIC_SCHOLAR_API_KEY
 
 BASE_URL = "https://api.semanticscholar.org/graph/v1/paper/search"
+
+
+# API key allows 1 request/second, cumulative across all endpoints
+MIN_INTERVAL = 1.1
+_last_request = 0.0
+
+
+def _headers(user_agent):
+    headers = {"User-Agent": user_agent}
+    if SEMANTIC_SCHOLAR_API_KEY:
+        headers["x-api-key"] = SEMANTIC_SCHOLAR_API_KEY
+    return headers
+
+
+def _get(url, params, headers, retries=4, timeout=10):
+    """Rate-limited GET with backoff on 429. All Semantic Scholar calls go through here."""
+    global _last_request
+
+    response = None
+    for attempt in range(retries):
+        wait = _last_request + MIN_INTERVAL - time.monotonic()
+        if wait > 0:
+            time.sleep(wait)
+
+        response = requests.get(url, params=params, headers=headers, timeout=timeout)
+        _last_request = time.monotonic()
+
+        if response.status_code != 429:
+            return response
+
+        wait_time = 2 ** attempt
+        print(f"Rate limited. Retrying in {wait_time}s...")
+        time.sleep(wait_time)
+
+    return response
 
 def fetch_semantic_scholar_papers(query, limit=10, retries=3):
     params = {
@@ -11,40 +47,28 @@ def fetch_semantic_scholar_papers(query, limit=10, retries=3):
         "fields": "title,abstract,year,citationCount,authors,url"
     }
 
-    headers = {
-        "User-Agent": "research-assistant/1.0"
-    }
+    headers = _headers("research-assistant/1.0")
 
-    for attempt in range(retries):
-        response = requests.get(BASE_URL, params=params, headers=headers)
+    response = _get(BASE_URL, params, headers, retries=retries)
 
-        if response.status_code == 200:
-            data = response.json()
+    if response.status_code == 200:
+        data = response.json()
 
-            papers = []
-            for paper in data.get("data", []):
-                papers.append({
-                    "title": paper.get("title"),
-                    "summary": paper.get("abstract"),
-                    "year": paper.get("year"),
-                    "citations": paper.get("citationCount", 0),
-                    "authors": [a["name"] for a in paper.get("authors", [])],
-                    "url": paper.get("url"),
-                    "source": "semantic_scholar",
-                })
+        papers = []
+        for paper in data.get("data", []):
+            papers.append({
+                "title": paper.get("title"),
+                "summary": paper.get("abstract"),
+                "year": paper.get("year"),
+                "citations": paper.get("citationCount", 0),
+                "authors": [a["name"] for a in paper.get("authors", [])],
+                "url": paper.get("url"),
+                "source": "semantic_scholar",
+            })
 
-            return papers
+        return papers
 
-        elif response.status_code == 429:
-            wait_time = 2 ** attempt
-            print(f"Rate limited. Retrying in {wait_time}s...")
-            time.sleep(wait_time)
-
-        else:
-            print(f"Error {response.status_code}: {response.text}")
-            return []
-
-    print("Failed after retries.")
+    print(f"Error {response.status_code}: {response.text}")
     return []
 
 
@@ -78,9 +102,7 @@ RefBASE_URL = "https://api.semanticscholar.org/graph/v1"
 
 def fetch_semantic_references(title):
     try:
-        headers = {
-            "User-Agent": "Mozilla/5.0"
-        }
+        headers = _headers("Mozilla/5.0")
 
         # -------- STEP 1: SEARCH PAPER --------
         search_url = f"{RefBASE_URL}/paper/search"
@@ -90,7 +112,7 @@ def fetch_semantic_references(title):
             "fields": "title,paperId"
         }
 
-        res = requests.get(search_url, params=params, headers=headers, timeout=10)
+        res = _get(search_url, params, headers)
 
         if res.status_code != 200:
             print("[ERROR] Search API failed:", res.text)
@@ -113,7 +135,7 @@ def fetch_semantic_references(title):
             "fields": "references.title,references.url"
         }
 
-        res = requests.get(ref_url, params=params, headers=headers, timeout=10)
+        res = _get(ref_url, params, headers)
 
         if res.status_code != 200:
             print("[ERROR] Reference API failed:", res.text)

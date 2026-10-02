@@ -1,4 +1,7 @@
 import ollama
+from app.utils.config import OLLAMA_HOST
+
+client = ollama.Client(host=OLLAMA_HOST)
 
 def critic_agent(query, analyzed_papers):
     context = ""
@@ -27,7 +30,7 @@ def critic_agent(query, analyzed_papers):
     Provide structured feedback.
     """
 
-    response = ollama.chat(
+    response = client.chat(
         model="mistral",
         messages=[{"role": "user", "content": prompt}]
     )

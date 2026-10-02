@@ -161,6 +161,8 @@ if mode == "Research Query":
     st.subheader("💬 Chat")
 
     for chat in st.session_state.current_chat:
+        if chat.get("type") == "pdf":
+            continue
         with st.chat_message("user"):
             st.write(chat["query"])
         with st.chat_message("assistant"):
@@ -194,6 +196,8 @@ if mode == "Research Query":
 
         with st.chat_message("assistant"):
             with st.spinner("Thinking... ⏳"):
+                sources = []
+                graph_html = None
                 try:
                     response = requests.get(
                         f"{API_URL}/research",
